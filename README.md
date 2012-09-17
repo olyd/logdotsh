@@ -28,13 +28,10 @@ Note: don't forget the newline(\n) in the end. Because it uses printf to print l
 
 The prints result is like bellow:
     
-> [DEBUG] Print debug messages
-
-> [INFO] Print information messages
-
-> [WARNING] Print warning messages
-
-> [ERROR] Print error messages
+    [DEBUG] Print debug messages
+    [INFO] Print information messages
+    [WARNING] Print warning messages
+    [ERROR] Print error messages
 
 The prompt, like '[DEBUG]', '[INFO]', indicates the log message type. If you runnig
 the above codes in the shell, the promt will be printed with different colors. If you dislike the colorful
@@ -67,8 +64,8 @@ that is to format string.
 
 The output is:
 
-> [DEBUG] Hello, world
-[DEBUG]             key,           value
+    [DEBUG] Hello, world
+    [DEBUG]             key,           value
 
 You can read the printf manual for more help in the [string format syntax][1].
 

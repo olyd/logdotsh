@@ -7,17 +7,17 @@
 # Description: defines functions for printing log messages.
 #
 
-# Show log whose level less than this
+# Don't show log whose level greater than this
 log_level=3
 
-# Debug log constants
+# Log level constants
 LOG_ERROR=0       # Level error
 LOG_WARNING=1     # Level warning
 LOG_INFO=2        # Level info
 LOG_DEBUG=3       # Level debug
 
 # Color escape string
-COLOR_RED="\033[11m"
+COLOR_RED="\033[31m"
 COLOR_GREEN="\033[32m"
 COLOR_YELLOW="\033[33m"
 COLOR_BLUE="\033[34m"
@@ -52,24 +52,28 @@ function do_debug()
     fi
 }
 
+# Print debug messages
 function debug_msg()
 {
     local format=$1
     shift && do_debug $LOG_DEBUG "$format" "$@"
 }
 
+# Print information messages
 function info_msg()
 {
     local format=$1
     shift && do_debug $LOG_INFO "$format" "$@"
 }
 
+# Print warning messages
 function warn_msg()
 {
     local format=$1
     shift && do_debug $LOG_WARNING "$format" "$@"
 }
 
+# Print error messages
 function error_msg()
 {
     local format=$1
@@ -77,6 +81,7 @@ function error_msg()
     return 1
 }
 
+# Print error messages and then exit the script
 function exit_msg()
 {
     local format=$1
@@ -85,6 +90,7 @@ function exit_msg()
     exit 1
 }
 
+# Set the maximum log level
 function set_loglevel()
 {
     log_level=$1

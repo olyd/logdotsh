@@ -4,7 +4,7 @@ logdotsh
 A simple log library written in shell
 
 Basic Usage
-========
+===========
 
 This library provides basic log functions like **debug_msg**, **info_msg**, **warn_msg** and **error_msg**.
 
@@ -29,8 +29,11 @@ Note: don't forget the newline(\n) in the end. Because it uses printf to print l
 The prints result is like bellow:
     
 > [DEBUG] Print debug messages
+
 > [INFO] Print information messages
+
 > [WARNING] Print warning messages
+
 > [ERROR] Print error messages
 
 The prompt, like '[DEBUG]', '[INFO]', indicates the log message type. If you runnig

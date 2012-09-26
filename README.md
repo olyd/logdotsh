@@ -109,7 +109,7 @@ Set log format
 --------------
 
 This library provides only several placeholders for formating log, that is
-'<levelname>', '<asctime>' and '<message>'. You can use **set_logfmt** to
+'&lt;levelname&gt;', '&lt;asctime&gt;' and '&lt;message&gt;'. You can use **set_logfmt** to
 change the default log format:
 
     set_logfmt '[<asctime> - <levelname>] <message>'

@@ -8,7 +8,7 @@ Basic Usage
 
 This library provides basic log functions like **debug_msg**, **info_msg**, **warn_msg** and **error_msg**.
 
-* debug_msg: prints some debug messeges when debug your scripts.
+ debug_msg: prints some debug messeges when debug your scripts.
 * info_msg: prints some information messages to indicate some key code in the scripts.
 * warn_msg: prints some warning messages to tell invalid input or unexpected result.
 * error_msg: prints some error messages when the result is wrong.
@@ -34,9 +34,7 @@ The prints result is like bellow:
     [ERROR] Print error messages
 
 The prompt, like '[DEBUG]', '[INFO]', indicates the log message type. If you runnig
-the above codes in the shell, the promt will be printed with different colors. If you dislike the colorful
-prints, you can simply assign empty to the color escape string defined in the beginning of the library. 
-You can read follow section to get more help.
+the above codes in the shell, the promt will be printed with different colors.
 
 But if you want to exit the running script when an error occurs? you must writing follow codes:
 
@@ -87,22 +85,12 @@ You can pick each one as you like to print some colorful messages to attract att
 Disable color
 -------------
 
-Someone may dislike the colorful print, and in some cases, like redirecting the log output to a file, the color
+Someone may dislike the colorful log, and in some cases, like redirecting the log output to a file, the color
 escape string will also appended to the file, it may be very annoyed.
 
-But the library doesn't give a good method to disable color when printing. May be I shall add a switch function to 
-enable/disable colorful print in the future. For now, the only way is to empty the predefined color escape strings
-in the beginning of the library:
+You can use **disable_color** to disable colorful log:
 
-    COLOR_RED=""
-    COLOR_GREEN=""
-    COLOR_YELLOW=""
-    COLOR_BLUE=""
-    COLOR_PURPLE=""
-    COLOR_CYAN=""
-    COLOR_GRAY=""
-    COLOR_WHITE=""
-    COLOR_RESET=""
+    disable_color
 
 Set log level
 -------------
@@ -116,5 +104,46 @@ than the log level set.
 So back to the problem mentioned in the beginning, we can use **set_loglevel** to prohibit printing debug messages:
 
     set_loglevel $LOG_INFO
+
+Set log format
+--------------
+
+This library provides only several placeholders for formating log, that is
+'<levelname>', '<asctime>' and '<message>'. You can use **set_logfmt** to
+change the default log format:
+
+    set_logfmt '[<asctime> - <levelname>] <message>'
+
+The default log format is '[<levelname>] [<asctime>] <message>'.
+
+Set date format
+---------------
+
+You can use **set_datefmt** to change the default date format in the log
+printed:
+
+    set_datefmt '%Y/%m/%d %H:%M:%S'
+
+See 'man date' for more help about the format syntax. The default date format
+is '%Y-%m-%d %H:%M:%S'.
+
+Note: If you don't specify '<asctime>' in the log format, then this will take
+no effect.
+
+Set log color
+--------------
+
+You can use **set_logcolor** to change the default color settings:
+
+    set_logcolor red yellow green blue
+
+From low log level to high, it will set error log to red, warning log to yellow,
+info log to green and debug log to blue.
+
+The valid color values can be any name of the colorful print functions listed
+in above or empty string. The empty string indicates to print log without
+color, below is the same as **disable_color**:
+
+    set_logcolor '' '' '' ''
 
 [1]: http://wiki.bash-hackers.org/commands/builtin/printf "The printf command"

@@ -127,7 +127,7 @@ printed:
 See 'man date' for more help about the format syntax. The default date format
 is '%Y-%m-%d %H:%M:%S'.
 
-Note: If you don't specify '<asctime>' in the log format, then this will take
+Note: If you don't specify '&lt;asctime&gt;' in the log format, then this will take
 no effect.
 
 Set log color

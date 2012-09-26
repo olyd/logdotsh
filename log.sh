@@ -7,31 +7,32 @@
 # Description: defines functions for printing log messages.
 #
 
-# Don't show log whose level greater than this
+# Show log whose level less than this
 log_level=3
 
-# Log level constants
+# Debug log constants
 LOG_ERROR=0       # Level error
 LOG_WARNING=1     # Level warning
 LOG_INFO=2        # Level info
 LOG_DEBUG=3       # Level debug
 
 # Color escape string
-COLOR_RED="\033[31m"
-COLOR_GREEN="\033[32m"
-COLOR_YELLOW="\033[33m"
-COLOR_BLUE="\033[34m"
-COLOR_PURPLE="\033[35m"
-COLOR_CYAN="\033[36m"
-COLOR_GRAY="\033[37m"
-COLOR_WHITE="\033[38m"
+COLOR_RED="\033[1;31m"
+COLOR_GREEN="\033[1;32m"
+COLOR_YELLOW="\033[1;33m"
+COLOR_BLUE="\033[1;34m"
+COLOR_PURPLE="\033[1;35m"
+COLOR_CYAN="\033[1;36m"
+COLOR_GRAY="\033[1;37m"
+COLOR_WHITE="\033[1;38m"
 COLOR_RESET="\033[0m"
 
-# Log prompt string
-LOG_PROMPT=("${COLOR_RED}[ERROR]${COLOR_RESET}"
-    "${COLOR_YELLOW}[WARNING]${COLOR_RESET}"
-    "${COLOR_BLUE}[INFO]${COLOR_RESET}"
-    "[DEBUG]")
+LOG_PROMPT=(
+    "${COLOR_RED}[ERROR]"
+    "${COLOR_YELLOW}[WARNING]"
+    "${COLOR_BLUE}[INFO]"
+    "[DEBUG]" 
+)
 
 # {{ LOG functions start
 
@@ -43,37 +44,34 @@ function do_debug()
 {
     local level=$1
     local format=$2
-    local prompt=${LOG_PROMPT[$level]}
+    local now=$(date +'%Y-%m-%d %H:%M:%S')
+    local prompt="${LOG_PROMPT[$level]} [$now]"
 
     if [ $level -gt $log_level ]; then
         return
     else
-        shift 2 && printf "${prompt} ${format}" "$@"
+        shift 2 && printf "${prompt} ${format}${COLOR_RESET}" "$@"
     fi
 }
 
-# Print debug messages
 function debug_msg()
 {
     local format=$1
     shift && do_debug $LOG_DEBUG "$format" "$@"
 }
 
-# Print information messages
 function info_msg()
 {
     local format=$1
     shift && do_debug $LOG_INFO "$format" "$@"
 }
 
-# Print warning messages
 function warn_msg()
 {
     local format=$1
     shift && do_debug $LOG_WARNING "$format" "$@"
 }
 
-# Print error messages
 function error_msg()
 {
     local format=$1
@@ -81,16 +79,12 @@ function error_msg()
     return 1
 }
 
-# Print error messages and then exit the script
 function exit_msg()
 {
-    local format=$1
-
-    shift && do_debug $LOG_ERROR "$format" "$@"
+    error_msg "$@"
     exit 1
 }
 
-# Set the maximum log level
 function set_loglevel()
 {
     log_level=$1

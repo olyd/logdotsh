@@ -114,7 +114,7 @@ change the default log format:
 
     set_logfmt '[<asctime> - <levelname>] <message>'
 
-The default log format is '[<levelname>] [<asctime>] <message>'.
+The default log format is '[&lt;levelname&gt;] [&lt;asctime&gt;'] <&lt;message&gt;>'.
 
 Set date format
 ---------------

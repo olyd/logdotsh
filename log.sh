@@ -136,7 +136,7 @@ function white()
 # Set default log level
 function set_loglevel()
 {
-    if echo "$1" | grep -qE "[0-9]+"; then
+    if echo "$1" | grep -qE "^[0-9]+$"; then
         log_level="$1"
     fi
 }

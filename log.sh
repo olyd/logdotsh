@@ -27,7 +27,7 @@ date_fmt='%Y-%m-%d %H:%M:%S'
 # Default log fmt
 log_fmt="[<levelname>] [<asctime>] <message>"
 # Default log color
-log_color=('red' 'yellow' 'blue' '')
+log_color=('red' 'yellow' 'green' '')
 # Support colors
 support_colors='red yellow blue white cyan gray purple green'
 
@@ -51,7 +51,7 @@ function do_log()
     fmt="${fmt//<asctime>/$(date +"$date_fmt")}"
     fmt="${fmt//<message>/$msg}"
 
-    shift && ${log_color[level]:-printf} "$fmt" "$@"
+    shift 2 && ${log_color[level]:-printf} "$fmt" "$@"
 }
 
 function debug_msg()
@@ -91,42 +91,50 @@ function exit_msg()
 
 function red()
 {
-    printf "\033[1;31m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;31m${fmt}\033[0m" "$@"
 }
 
 function green()
 {
-    printf "\033[1;32m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;32m${fmt}\033[0m" "$@"
 }
 
 function gray()
 {
-    printf "\033[1;37m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;37m${fmt}\033[0m" "$@"
 }
 
 function yellow()
 {
-    printf "\033[1;33m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;33m${fmt}\033[0m" "$@"
 }
 
 function blue()
 {
-    printf "\033[1;34m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;34m${fmt}\033[0m" "$@"
 }
 
 function cyan()
 {
-    printf "\033[1;36m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;36m${fmt}\033[0m" "$@"
 }
 
 function purple()
 {
-    printf "\033[1;35m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;35m${fmt}\033[0m" "$@"
 }
 
 function white()
 {
-    printf "\033[1;38m${1}\033[0m" "$@"
+    local fmt=$1
+    shift && printf "\033[1;38m${fmt}\033[0m" "$@"
 }
 
 # Colorful print end }}

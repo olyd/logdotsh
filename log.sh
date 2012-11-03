@@ -18,18 +18,28 @@ LOG_DEBUG=3       # Level debug
 # Log level names
 LOG_LEVELNAMES=('ERROR' 'WARNING' 'INFO' 'DEBUG')
 
-# Global constants definition end }}
+# Support colors
+SUPPORT_COLORS='red yellow blue white cyan gray purple green'
+
+# Default log file
+if [ ! -f "$0" ]; then
+    _log_file="/tmp/logdotsh.log.`date +'%Y%m%d'`"
+else
+    base=$(basename $0 | awk -F. '{print $1}')
+    _log_file="/tmp/$base.log.`date +'%Y%m%d'`"
+    unset base
+fi
 
 # Show log whose level less than this
-log_level=3
+_log_level=3
 # Default date fmt
-date_fmt='%Y-%m-%d %H:%M:%S'
+_date_fmt='%Y-%m-%d %H:%M:%S'
 # Default log fmt
-log_fmt="[<levelname>] [<asctime>] <message>"
+_log_fmt="[<levelname>] [<asctime>] <message>"
 # Default log color
-log_color=('red' 'yellow' 'green' '')
-# Support colors
-support_colors='red yellow blue white cyan gray purple green'
+_log_color=('red' 'yellow' 'green' '')
+
+# Global constants definition end }}
 
 # {{ LOG functions start
 
@@ -41,17 +51,37 @@ function do_log()
 {
     local level=$1
     local msg="$2"
-    local fmt="${log_fmt}"
+    local fmt="${_log_fmt}"
 
-    if [ $level -gt $log_level ]; then
-        return
-    fi
-
-    fmt="${fmt//<levelname>/${LOG_LEVELNAMES[$level]}}"
-    fmt="${fmt//<asctime>/$(date +"$date_fmt")}"
+    # Set log format
+    fmt="${fmt//<asctime>/$(date +"$_date_fmt")}"
     fmt="${fmt//<message>/$msg}"
+    fmt="${fmt//<levelname>/${LOG_LEVELNAMES[$level]}}"
 
-    shift 2 && ${log_color[level]:-printf} "$fmt" "$@"
+    shift 2
+
+    # Print all log messages to log file
+    printf "$fmt" "$@" >> $_log_file
+
+    if [ $level -le $_log_level ]; then
+        ${_log_color[level]:-printf} "$fmt" "$@"
+    fi
+}
+
+# Print log message to both file and stdout
+# Use log_msg if you want to print log message always, and don't 
+# want to be controlled by set_loglevel
+function log_msg()
+{
+    local msg="$1"
+    local fmt="${_log_fmt}"
+
+    # Set log format
+    fmt="${fmt//<asctime>/$(date +"$_date_fmt")}"
+    fmt="${fmt//<message>/$msg}"
+    fmt="${fmt//<levelname>/LOG}"
+
+    shift && printf "$fmt" "$@" | tee -a $_log_file
 }
 
 function debug_msg()
@@ -145,7 +175,15 @@ function white()
 function set_loglevel()
 {
     if echo "$1" | grep -qE "^[0-9]+$"; then
-        log_level="$1"
+        _log_level="$1"
+    fi
+}
+
+# Set the log file
+function set_logfile()
+{
+    if [ -n "$1" ]; then
+        _log_file="$1"
     fi
 }
 
@@ -153,7 +191,7 @@ function set_loglevel()
 function set_logfmt()
 {
     if [ -n "$1" ]; then
-        log_fmt="$1"
+        _log_fmt="$1"
     fi
 }
 
@@ -161,7 +199,7 @@ function set_logfmt()
 function set_datefmt()
 {
     if [ -n "$1" ]; then
-        date_fmt="$1"
+        _date_fmt="$1"
     fi
 }
 
@@ -171,11 +209,11 @@ function set_logcolor()
     local len=$#
 
     for (( i=0; i<$len; i++ )); do
-        if echo "$support_colors" | grep -wq "$1"
+        if echo "$SUPPORT_COLORS" | grep -wq "$1"
         then
-            log_color[$i]=$1
+            _log_color[$i]=$1
         else
-            log_color[$i]=''
+            _log_color[$i]=''
         fi
 
         shift
@@ -183,9 +221,15 @@ function set_logcolor()
 }
 
 # Disable colorful log
-function disable_color()
+function disable_logcolor()
 {
     set_logcolor '' '' '' ''
+}
+
+# Reset color to default
+function reset_logcolor()
+{
+    set_logcolor 'red' 'yellow' 'green' ''
 }
 
 # Log set functions }}

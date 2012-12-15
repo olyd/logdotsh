@@ -21,23 +21,29 @@ LOG_LEVELNAMES=('ERROR' 'WARNING' 'INFO' 'DEBUG')
 # Support colors
 SUPPORT_COLORS='red yellow blue white cyan gray purple green'
 
-# Default log file
-if [ ! -f "$0" ]; then
-    _log_file="/tmp/logdotsh.log.`date +'%Y%m%d'`"
-else
-    base=$(basename $0 | awk -F. '{print $1}')
-    _log_file="/tmp/$base.log.`date +'%Y%m%d'`"
-    unset base
-fi
+# Determines whether the default value have be set
+if [ -z "$_log_set_default" ]; then
+    # Set the flag to 1  
+    _log_set_default=1
 
-# Show log whose level less than this
-_log_level=3
-# Default date fmt
-_date_fmt='%Y-%m-%d %H:%M:%S'
-# Default log fmt
-_log_fmt="[<levelname>] [<asctime>] <message>"
-# Default log color
-_log_color=('red' 'yellow' 'green' '')
+    # Default log file
+    if [ ! -f "$0" ]; then
+        _log_file="/tmp/logdotsh.log.`date +'%Y%m%d'`"
+    else
+        base=$(basename $0 | awk -F. '{print $1}')
+        _log_file="/tmp/$base.log.`date +'%Y%m%d'`"
+        unset base
+    fi
+
+    # Show log whose level less than this
+    _log_level=3
+    # Default date fmt
+    _date_fmt='%Y-%m-%d %H:%M:%S'
+    # Default log fmt
+    _log_fmt="[<levelname>] [<asctime>] <message>"
+    # Default log color
+    _log_color=('red' 'yellow' 'green' '')
+fi
 
 # Global constants definition end }}
 

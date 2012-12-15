@@ -1,3 +1,4 @@
+# It's recommended to use absolute path when sourcing a script
 . ./log.sh
 
 echo "1. use default log settings"

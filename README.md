@@ -8,7 +8,7 @@ Basic Usage
 
 This library provides basic log functions like **debug_msg**, **info_msg**, **warn_msg** and **error_msg**.
 
- debug_msg: prints some debug messeges when debug your scripts.
+* debug_msg: prints some debug messeges when debug your scripts.
 * info_msg: prints some information messages to indicate some key code in the scripts.
 * warn_msg: prints some warning messages to tell invalid input or unexpected result.
 * error_msg: prints some error messages when the result is wrong.
